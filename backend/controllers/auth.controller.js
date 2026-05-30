@@ -1,9 +1,10 @@
 import pool from "../database/dbConnect.js";
 import bcrypt, { setRandomFallback } from "bcryptjs";
 import generateToken from "../utils/generateToken.js";
-import { sendEmail } from "../nodemailer/nodemailer.js";
+import transporter, { sendEmail } from "../nodemailer/nodemailer.js";
 import jwt from "jsonwebtoken";
 import { matchedData } from "express-validator";
+import { createDiffieHellmanGroup } from "crypto";
 //register user and send OTP to email
 export const registerUser = async (req, res) => {
   try {
@@ -78,6 +79,8 @@ export const registerUser = async (req, res) => {
       sameSite: "strict",
     });
 
+    await transporter.verify()
+    console.log("SMTP connected")
     await sendEmail(email, `Your OTP is ${OTP}`);
 
     return res

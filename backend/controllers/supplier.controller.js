@@ -42,7 +42,7 @@ export const getSupplierById=async(req,res)=>{
             COUNT(DISTINCT p.id) AS total_products,
             COUNT (DISTINCT po.id) AS total_orders
             FROM suppliers s
-            LEFT JOIN product p ON s.id=p.supplier_id
+            LEFT JOIN products p ON s.id=p.supplier_id
             LEFT JOIN purchase_orders po ON s.id=po.supplier_id
             WHERE s.id=$1
             GROUP BY s.id
@@ -68,7 +68,7 @@ export const getSupplierById=async(req,res)=>{
     // all purchase orders placed with this supplier
     const orders = await pool.query(
       `SELECT
-        po.id, po.status, po.total_amount, po.order_date, po.updated_at,
+        po.id, po.status, po.total_amt, po.order_date, po.updated_at,
         u.name AS created_by
        FROM purchase_orders po
        LEFT JOIN users u ON po.user_id = u.id
@@ -198,13 +198,13 @@ export const updateSupplier=async(req,res)=>{
         'SELECT id FROM suppliers WHERE LOWER(name) = LOWER($1) AND id != $2',
         [name, id]
       );
-    }
+    
 
 
     if (duplicateName.rows.length > 0) {
         return res.status(400).json({ success: false, message: 'Supplier with this name already exists' });
       }
-
+    }
       // check duplicate email — exclude current supplier from check
     if (email) {
       const duplicateEmail = await pool.query(
@@ -282,7 +282,7 @@ export const deleteSupplier=async(req,res)=>{
 
     return res.status(200).json({
       success: true,
-      message: `Supplier "${existing.rows[0].name}" deleted successfully`,
+      message: `Supplier ${existing.rows[0].name} deleted successfully`,
       affected_products: count,
       note: count > 0
         ? `${count} product(s) have had their supplier set to NULL`

@@ -73,7 +73,7 @@ export const createCategory = async (req, res) => {
 
     const result = await pool.query(
       `
-                INSERT INTO categories (name,description) VALUES ($1,$2) RETURNING id,name,description,created_at RETURNING *
+                INSERT INTO categories (name,description) VALUES ($1,$2) RETURNING id,name,description,created_at 
             `,
       [parsedName, description || null],
     );
@@ -129,12 +129,11 @@ export const updateCategory = async (req, res) => {
           .json({ success: false, message: "Category name already exists" });
       }
     }
-
     const updated = await pool.query(
       `
         UPDATE categories SET 
-        name=COLLASCE($1,name),
-        desciption=COLLASCE($2,description)
+        name=COALESCE($1,name),
+        descRiption=COALESCE($2,description)
         WHERE id=$3
         RETURNING id,name,description,created_at
         `,
@@ -168,18 +167,16 @@ export const deleteCategory=async(req,res)=>{
 
     //warn how many products will be affected
     const affectedProducts=await pool.query(`
-        SELECT COUNT (*) FROM products HWERE category_id=$1
+        SELECT COUNT (*) FROM products WHERE category_id=$1
         `,[id])
-
           const count = parseInt(affectedProducts.rows[0].count);
-
+          await pool.query(`DELETE FROM products WHERE category_id=$1`,[id]);
           await pool.query('DELETE FROM categories WHERE id = $1', [id]);
 
-          await pool.queey(`DELETE FROM products WHERE category_id=$1`,[id]);
 
           return res.status(200).json({
       success: true,
-      message: `Category "${existing.rows[0].name}" deleted successfully`,
+      message: `Category ${existing.rows[0].name} deleted successfully`,
       affected_products: count,
       note: count > 0
         ? `${count} product(s) are also deleted since product category is deleted`
@@ -196,7 +193,6 @@ export const deleteCategory=async(req,res)=>{
     }
 }
 
-//get category by category id
 export const getCategoryById=async(req,res)=>{
     try{
         const {id}=req.params
@@ -221,8 +217,8 @@ export const getCategoryById=async(req,res)=>{
         p.low_stock_threshold, p.updated_at,
         s.name AS supplier_name
         FROM products p 
-        LEFT JOIN supplier s 
-        WHERE p.supplier_id=s.id
+        LEFT JOIN suppliers s 
+        ON p.supplier_id=s.id
         WHERE p.category_id=$1
         ORDER BY p.name ASC
         `,[id])

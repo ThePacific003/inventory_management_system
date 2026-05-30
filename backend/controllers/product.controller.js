@@ -73,7 +73,7 @@ export const getProductById=async(req,res)=>{
         const {id}=req.params
         const product=await pool.query(`
             SELECT 
-            p.id, p.name, p.description, p.price, p.quantity, p.stock, p.low_stock_threshold, p.created_at, p.updated_at,
+            p.id, p.name, p.description, p.price, p.quantity, p.low_stock_threshold, p.created_at, p.updated_at,
             c.name AS category_name, c.id AS category_id,
             s.name AS supplier_name, s.id AS supplier_id
             FROM products p
@@ -133,6 +133,7 @@ export const createProduct=async(req,res)=>{
       });
     }
 
+
     const parsedPrice = Number(price);
     const parsedQuantity = Number(quantity);
     const parsedThreshold = Number(low_stock_threshold ?? 10);
@@ -163,6 +164,15 @@ export const createProduct=async(req,res)=>{
       message: 'Invalid supplier_id: supplier does not exist'
     });
   }
+}
+
+const existing_product=await pool.query(`SELECT id FROM products WHERE lower(name)=lower($1)`,[name])
+
+if(existing_product.rows.length>0){
+  return res.status(400).json({
+    success:false,
+    message:"Product already exist with this name"
+  })
 }
 
         const newProduct = await pool.query(

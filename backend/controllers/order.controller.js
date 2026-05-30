@@ -28,7 +28,6 @@ export const createOrder = async (req, res) => {
       }
     }
 
-    // ✅ CHANGED: also fetching supplier email and name for the email
     const supplierCheck = await pool.query(
       `SELECT id, name, email FROM suppliers WHERE id = $1`,
       [supplier_id]
@@ -40,7 +39,6 @@ export const createOrder = async (req, res) => {
 
     const productIds = items.map((item) => item.product_id);
 
-    // ✅ CHANGED: also fetching product name for the email
     const productsCheck = await pool.query(
       `SELECT id, name FROM products WHERE id = ANY($1::int[])`,
       [productIds]
@@ -82,7 +80,7 @@ export const createOrder = async (req, res) => {
     );
 
     const orderResult = await pool.query(
-      `INSERT INTO purchase_order (supplier_id, user_id, status, total_amt)
+      `INSERT INTO purchase_orders (supplier_id, user_id, status, total_amt)
        VALUES ($1, $2, 'pending', $3) RETURNING *`,
       [supplier_id, user_id, total_amount]
     );
@@ -155,7 +153,7 @@ export const getAllOrders=async(req,res)=>{
             'subtotal',     oi.quantity * oi.unit_price
           )
         ) AS items
-      FROM purchase_order po
+      FROM purchase_orders po
       LEFT JOIN suppliers s  ON s.id = po.supplier_id
       LEFT JOIN users u      ON u.id = po.user_id
       LEFT JOIN order_items oi ON oi.order_id = po.id
@@ -209,7 +207,7 @@ export const getOrderById = async (req, res) => {
             'subtotal',     oi.quantity * oi.unit_price
           )
         ) AS items
-      FROM purchase_order po
+      FROM purchase_orders po
       LEFT JOIN suppliers s    ON s.id = po.supplier_id
       LEFT JOIN users u        ON u.id = po.user_id
       LEFT JOIN order_items oi ON oi.order_id = po.id
@@ -240,7 +238,7 @@ export const receivedOrder=async(req,res)=>{
     const {id}=req.params
     const user_id=req.user.id
 
-    const orderCheck=await pool.query('SELECT * FROM purchase_order WHERE id=$1',[id])
+    const orderCheck=await pool.query('SELECT * FROM purchase_orders WHERE id=$1',[id])
 
     if(orderCheck.rows.length===0){
        return res.status(404).json({
@@ -272,7 +270,7 @@ export const receivedOrder=async(req,res)=>{
 
     // Update order status
     const updatedOrder = await pool.query(
-      `UPDATE purchase_order
+      `UPDATE purchase_orders
        SET status = 'received', updated_at = NOW()
        WHERE id = $1
        RETURNING *`,
@@ -305,7 +303,7 @@ if (updated.quantity <= updated.low_stock_threshold) {
 await pool.query(
   `INSERT INTO stock_transactions (product_id, user_id, type, quantity, note)
   VALUES ($1, $2, 'IN', $3, $4)`,
-  [item.product_id, user_id, item.quantity, `Received from purchase order #${id}`]
+  [item.product_id, user_id, item.quantity, `Received from purchase order ${id}`]
 );
 }
     
@@ -330,7 +328,7 @@ export const cancelOrder=async(req,res)=>{
     const user_id=req.user.id
 
      const orderCheck = await pool.query(
-      `SELECT * FROM purchase_order WHERE id = $1`,
+      `SELECT * FROM purchase_orders WHERE id = $1`,
       [id]
     );
 

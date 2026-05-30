@@ -24,16 +24,16 @@ export const getDashboardStats=async(req,res)=>{
         pool.query(`SELECT COUNT(*) FROM suppliers`),
 
          // total orders
-      pool.query(`SELECT COUNT(*) FROM purchase_order`),
+      pool.query(`SELECT COUNT(*) FROM purchase_orders`),
 
       // pending orders
-      pool.query(`SELECT COUNT(*) FROM purchase_order WHERE status = 'pending'`),
+      pool.query(`SELECT COUNT(*) FROM purchase_orders WHERE status = 'pending'`),
 
       // received orders
-      pool.query(`SELECT COUNT(*) FROM purchase_order WHERE status = 'received'`),
+      pool.query(`SELECT COUNT(*) FROM purchase_orders WHERE status = 'received'`),
 
       // cancelled orders
-      pool.query(`SELECT COUNT(*) FROM purchase_order WHERE status = 'cancelled'`),
+      pool.query(`SELECT COUNT(*) FROM purchase_orders WHERE status = 'cancelled'`),
 
       // low stock products (quantity <= threshold but not zero)
       pool.query(`
@@ -72,7 +72,7 @@ export const getDashboardStats=async(req,res)=>{
           po.total_amt,
           po.order_date,
           s.name AS supplier_name
-        FROM purchase_order po
+        FROM purchase_orders po
         LEFT JOIN suppliers s ON s.id = po.supplier_id
         ORDER BY po.order_date DESC
         LIMIT 5
@@ -128,7 +128,6 @@ export const getDashboardStats=async(req,res)=>{
 export const getStockMovements=async(req,res)=>{
     try{
         const {period='7'}=req.query
-
         const [dailyMovements, summary, topMovedProducts]=await Promise.all([
 
             //daily in/out quantities over the period
@@ -212,7 +211,7 @@ export const getStockMovements=async(req,res)=>{
 
 export const getLowStockItems=async(req,res)=>{
     try{
-        const{threshold, category, supplier, page=1, limit=10 }=req.query
+        const{threshold, category, supplier, page=1, limit=10 }=req.body
         const offset=(page-1)*limit
 
         let conditions=[`p.quantity<=p.low_stock_threshold`]
@@ -242,7 +241,7 @@ export const getLowStockItems=async(req,res)=>{
             paramCount++
         }
 
-        const whereClause=`WHERE ${conditions.join('AND')}`
+        const whereClause=`WHERE ${conditions.join(' AND ')}`
 
         const [items, countResult, summary]=await Promise.all([
             //paginated low stock products
