@@ -72,7 +72,6 @@ const user = authStore(useShallow((state) => state.user));
     setLoggingOut(true)
     try {
       await logout()
-      console.log(authStore.getState().user)
       toast.success('Logged out')
       navigate('/login')
     } catch {

@@ -222,11 +222,12 @@ if(existing_product.rows.length>0){
 export const updateProduct=async(req,res)=>{
     try{
          const { id } = req.params;
+         
     const {
       name, description, price,
       low_stock_threshold, category_id, supplier_id,
     } = req.body;
-
+    
     // check product exists
     const existing = await pool.query('SELECT id FROM products WHERE id = $1', [id]);
     if (existing.rows.length === 0) {
@@ -248,7 +249,8 @@ export const updateProduct=async(req,res)=>{
        RETURNING id, name, description, price, quantity, low_stock_threshold, updated_at`,
       [name, description, price, low_stock_threshold, category_id, supplier_id, id]
     );
-
+    console.log(updated.rows[0]);
+    
     return res.status(200).json({
       success: true,
       message: 'Product updated successfully',

@@ -9,8 +9,11 @@ import ResetPassword from '../pages/auth/ResetPassword.jsx'
 import Layout from '../components/Layout/Layout.jsx'
 import Dashboard from '../pages/dashboard/Dashboard.jsx'
 import authStore from '../store/authStore.jsx'
-
-
+import Products from '../pages/ProductsPage.jsx'
+import Categories from '../pages/CategoryPage.jsx'
+import Suppliers from '../pages/SupplierPage.jsx'
+import Orders from '../pages/OrderManagementPage.jsx'
+import Transactions from '../pages/TransactionPage.jsx'
 // Protected Route
 const ProtectedRoute = ({ children }) => {
   const user = authStore((state) => state.user)
@@ -63,13 +66,13 @@ export default function AppRoutes() {
 >
           <Route index element={<Dashboard/>}/>
 
-           {/* Uncomment as you build each page:
+            Uncomment as you build each page:
           <Route path="products"     element={<Products />} />
           <Route path="categories"   element={<Categories />} />
           <Route path="suppliers"    element={<Suppliers />} />
           <Route path="orders"       element={<Orders />} />
           <Route path="transactions" element={<Transactions />} />
-          */}
+          
   </Route>
   <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

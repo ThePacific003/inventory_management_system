@@ -9,7 +9,7 @@ export const getAllSuppliers=async(req ,res)=>{
         COUNT(DISTINCT p.id) AS total_products,
         COUNT (DISTINCT po.id) AS total_orders
         FROM suppliers s
-         LEFT JOIN products p ON p.supplier_id = s.id
+         LEFT JOIN supplier_products p ON p.supplier_id = s.id
        LEFT JOIN purchase_orders po ON po.supplier_id = s.id
        GROUP BY s.id
        ORDER BY s.name ASC
@@ -42,7 +42,7 @@ export const getSupplierById=async(req,res)=>{
             COUNT(DISTINCT p.id) AS total_products,
             COUNT (DISTINCT po.id) AS total_orders
             FROM suppliers s
-            LEFT JOIN products p ON s.id=p.supplier_id
+            LEFT JOIN supplier_products p ON s.id=p.supplier_id
             LEFT JOIN purchase_orders po ON s.id=po.supplier_id
             WHERE s.id=$1
             GROUP BY s.id
@@ -53,17 +53,39 @@ export const getSupplierById=async(req,res)=>{
     }
 
     // all products supplied by this supplier
-    const products = await pool.query(
-      `SELECT
-        p.id, p.name, p.price, p.quantity,
-        p.low_stock_threshold, p.updated_at,
-        c.name AS category_name
-       FROM products p
-       LEFT JOIN categories c ON p.category_id = c.id
-       WHERE p.supplier_id = $1
-       ORDER BY p.name ASC`,
-      [id]
-    );
+    // const products = await pool.query(
+    //   `SELECT
+    //     p.id, p.name, p.price, p.quantity,
+    //     p.low_stock_threshold, p.updated_at,
+    //     pr.name AS product_name
+    //    FROM supplier_products p
+    //    LEFT JOIN products pr ON p.product_id = pr.id
+    //    WHERE p.supplier_id = $1
+    //    ORDER BY p.name ASC`,
+    //   [id]
+    // );
+
+    const products=await pool.query(
+`
+SELECT 
+    p.name,
+    p.price,
+    p.quantity,
+    p.updated_at,
+    c.name AS category_name
+FROM supplier_products sp
+INNER JOIN products p 
+    ON p.id = sp.product_id
+INNER JOIN categories c 
+    ON c.id = p.category_id
+WHERE sp.supplier_id = $1
+ORDER BY p.name ASC
+`,[id]
+
+    )
+
+
+
 
     // all purchase orders placed with this supplier
     const orders = await pool.query(

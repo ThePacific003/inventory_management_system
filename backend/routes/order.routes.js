@@ -1,6 +1,6 @@
 import express from "express"
 import { protect } from "../middleware/auth.middleware.js"
-import { cancelOrder, createOrder, getAllOrders, getOrderById, receivedOrder } from "../controllers/order.controller.js"
+import { cancelOrder, createOrder, getAllOrders, getOrderById, receivedOrder, updateOrder } from "../controllers/order.controller.js"
 
 const router=express.Router()
 
@@ -9,4 +9,5 @@ router.get('/',protect,getAllOrders)
 router.get('/:id',protect,getOrderById)
 router.patch('/:id',protect,receivedOrder)
 router.patch('/cancel/:id',protect,cancelOrder)
+router.put('/:id',protect,updateOrder)
 export default router

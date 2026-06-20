@@ -356,7 +356,7 @@ export const cancelOrder=async(req,res)=>{
     }
 
     const updatedOrder = await pool.query(
-      `UPDATE purchase_order
+      `UPDATE purchase_orders
        SET status = 'cancelled', updated_at = NOW()
        WHERE id = $1
        RETURNING *`,
@@ -377,3 +377,193 @@ export const cancelOrder=async(req,res)=>{
     })
   }
 }
+
+
+export const updateOrder = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { supplier_id, items } = req.body;
+
+    // check order exists
+    const orderCheck = await pool.query(
+      `SELECT * FROM purchase_orders WHERE id = $1`,
+      [id]
+    );
+
+    if (orderCheck.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found",
+      });
+    }
+
+    const order = orderCheck.rows[0];
+
+    // block update if order is cancelled or received
+    if (order.status === "cancelled") {
+      return res.status(400).json({
+        success: false,
+        message: "Cannot update a cancelled order",
+      });
+    }
+
+    if (order.status === "received") {
+      return res.status(400).json({
+        success: false,
+        message: "Cannot update an already received order",
+      });
+    }
+
+    // fetch existing order items from DB
+    const existingItems = await pool.query(
+      `SELECT 
+        oi.id,
+        oi.product_id,
+        oi.quantity,
+        oi.unit_price,
+        p.name AS product_name
+       FROM order_items oi
+       LEFT JOIN products p ON p.id = oi.product_id
+       WHERE oi.order_id = $1`,
+      [id]
+    );
+
+    if (existingItems.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No items found for this order",
+      });
+    }
+
+    // validate supplier if provided
+    if (supplier_id) {
+      const supplierCheck = await pool.query(
+        `SELECT id FROM suppliers WHERE id = $1`,
+        [supplier_id]
+      );
+
+      if (supplierCheck.rows.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "Supplier not found",
+        });
+      }
+    }
+
+    // update item quantities if provided
+    if (items !== undefined) {
+      if (!Array.isArray(items) || items.length === 0) {
+        return res.status(400).json({
+          success: false,
+          message: "Items must be a non-empty array",
+        });
+      }
+
+      // get existing product IDs in this order
+      const existingProductIds = existingItems.rows.map(
+        (item) => item.product_id
+      );
+
+      // check all product_ids in request already exist in order
+      for (const item of items) {
+        if (!item.product_id || !item.quantity) {
+          return res.status(400).json({
+            success: false,
+            message: "Each item must have product_id and quantity",
+          });
+        }
+
+        if (item.quantity <= 0) {
+          return res.status(400).json({
+            success: false,
+            message: "Quantity must be greater than 0",
+          });
+        }
+
+        // block if product not already in this order
+        if (!existingProductIds.includes(item.product_id)) {
+          return res.status(400).json({
+            success: false,
+            message: `Product ${item.product_id} does not exist in this order. You can only update quantities of existing items`,
+          });
+        }
+      }
+
+      // update each item quantity
+      for (const item of items) {
+        await pool.query(
+          `UPDATE order_items SET
+            quantity   = $1
+           WHERE order_id  = $2
+           AND   product_id = $3`,
+          [item.quantity, id, item.product_id]
+        );
+      }
+
+      // recalculate total from updated items
+      const recalcTotal = await pool.query(
+        `SELECT SUM(quantity * unit_price) AS total
+         FROM order_items
+         WHERE order_id = $1`,
+        [id]
+      );
+
+      const newTotal = parseFloat(recalcTotal.rows[0].total);
+
+      // update order total and supplier if provided
+      await pool.query(
+        `UPDATE purchase_orders SET
+          supplier_id = COALESCE($1, supplier_id),
+          total_amt   = $2,
+          updated_at  = NOW()
+         WHERE id = $3`,
+        [supplier_id || null, newTotal, id]
+      );
+    } else {
+      // only supplier_id is being updated
+      await pool.query(
+        `UPDATE purchase_orders SET
+          supplier_id = COALESCE($1, supplier_id),
+          updated_at  = NOW()
+         WHERE id = $2`,
+        [supplier_id || null, id]
+      );
+    }
+
+    // fetch final updated order with items
+    const updatedOrder = await pool.query(
+      `SELECT * FROM purchase_orders WHERE id = $1`,
+      [id]
+    );
+
+    const updatedItems = await pool.query(
+      `SELECT
+        oi.id,
+        oi.product_id,
+        p.name  AS product_name,
+        oi.quantity,
+        oi.unit_price,
+        oi.quantity * oi.unit_price AS subtotal
+       FROM order_items oi
+       LEFT JOIN products p ON p.id = oi.product_id
+       WHERE oi.order_id = $1`,
+      [id]
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Order updated successfully",
+      data: {
+        order: updatedOrder.rows[0],
+        items: updatedItems.rows,
+      },
+    });
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};

@@ -82,6 +82,16 @@ const useAuthStore = create((set) => ({
     catch(err){
       throw new err
     }
+  },
+
+  createStaff:async(data)=>{
+    try{
+      const res=await api.post('/auth/create-staff',data)
+      return res.data.users
+    }
+    catch(err){
+      throw new err
+    }
   }
 
 

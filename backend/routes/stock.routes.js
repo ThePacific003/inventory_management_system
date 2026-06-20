@@ -4,8 +4,8 @@ import { createTransaction, getAllTransactions, getTransactionsByProduct } from 
 
 const router=express.Router()
 
-router.post("/",protect,createTransaction)
-router.get("/:id",protect,getTransactionsByProduct)
+router.patch("/",protect,createTransaction)
+router.get("/:productId",protect,getTransactionsByProduct)
 router.get("/",protect,getAllTransactions)
 
 export default router

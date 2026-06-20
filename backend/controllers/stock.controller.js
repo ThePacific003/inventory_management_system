@@ -7,6 +7,7 @@ export const createTransaction=async(req,res)=>{
         const user_id=req.id
 
         const {product_id,type,quantity,note}=req.body
+        
 
         if(!product_id || !type || !quantity){
             return res.status(400).json({
@@ -34,13 +35,13 @@ export const createTransaction=async(req,res)=>{
     }
 
     const currentProduct = product.rows[0];
-
+    const before = currentProduct.quantity;
     // calculate new quantity based on transaction type
     let newQuantity;
     if (type === 'IN') {
-      newQuantity = currentProduct.quantity + quantity;
+     newQuantity = before + quantity;
     } else if (type === 'OUT') {
-      newQuantity = currentProduct.quantity - quantity;
+      newQuantity = before - quantity;
     } else {
       // ADJUSTMENT — quantity is set directly
       newQuantity = quantity;
@@ -56,10 +57,10 @@ export const createTransaction=async(req,res)=>{
 
     // insert stock transaction record
     const transaction = await pool.query(
-      `INSERT INTO stock_transactions (product_id, user_id, type, quantity, note)
-       VALUES ($1, $2, $3, $4, $5)
+      `INSERT INTO stock_transactions (product_id,product_name, user_id, type, quantity, note, stock_before, stock_after)
+       VALUES ($1, $2, $3, $4, $5, $6,$7)
        RETURNING id, type, quantity, note, created_at`,
-      [product_id, req.user.id, type, quantity, note || null]
+      [product_id,product.name, req.user.id, type, quantity, note || null,  before, newQuantity]
     );
 
 // update product quantity
@@ -161,7 +162,7 @@ export const getTransactionsByProduct = async (req, res) => {
 
   const dataParams  = [...params, parseInt(limit), parseInt(offset)];
   const countParams = [...params];
-
+  
   try {
     const productCheck = await pool.query(
       'SELECT id, name FROM products WHERE id = $1',
@@ -230,7 +231,7 @@ export const getAllTransactions=async(req,res)=>{
         }
 
         if(startDate){
-            conditions.push(`st.startDate>=$${paramCount}`)
+            conditions.push(`st.created_at>=$${paramCount}`)
             params.push(startDate)
             paramCount++
         }
@@ -248,11 +249,12 @@ export const getAllTransactions=async(req,res)=>{
       st.id,
       st.type,
       st.quantity,
+       st.stock_before,
+  st.stock_after,
       st.note,
       st.created_at,
       p.id          AS product_id,
       p.name        AS product_name,
-      p.quantity    AS current_stock,
       u.id          AS user_id,
       u.name        AS user_name,
       u.email       AS user_email
