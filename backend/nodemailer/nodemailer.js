@@ -14,13 +14,15 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-transporter.verify((error, success) => {
-  if (error) {
-    console.error("Nodemailer configuration error:", error);
-  } else {
-    console.log("Nodemailer is ready to send emails");
-  }
-});
+if (process.env.NODE_ENV !== "production") {
+  transporter.verify((error) => {
+    if (error) {
+      console.error(error);
+    } else {
+      console.log("Nodemailer ready");
+    }
+  });
+}
 
 // ✅ existing — untouched
 export const sendEmail = async (to, text) => {
