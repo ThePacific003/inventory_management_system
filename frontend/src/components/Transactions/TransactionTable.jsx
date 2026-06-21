@@ -1,4 +1,4 @@
-import TransactionTableRow from "./TransactionTableRow";
+import TransactionTableRow from "./TransactionTableRow.jsx";
 import { ArrowDownUp } from "lucide-react";
 
 const COLUMNS = [

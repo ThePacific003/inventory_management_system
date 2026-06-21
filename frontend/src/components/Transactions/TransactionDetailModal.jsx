@@ -9,7 +9,7 @@ import {
   FileText,
   Layers,
 } from "lucide-react";
-import { formatDate } from "../../utils/formatDate";
+import { formatDate } from "../../utils/formatDate.js";
 
 function DetailRow({ icon: Icon, label, value, valueClass = "" }) {
   return (

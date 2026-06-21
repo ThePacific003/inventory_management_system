@@ -1,5 +1,5 @@
 import { Package } from "lucide-react";
-import { OrderTableRow } from "./OrderTableRow";
+import { OrderTableRow } from "./OrderTableRow.jsx";
 
 const COLUMNS = [
   "Order",

@@ -1,15 +1,15 @@
 import { useEffect, useState, useMemo } from "react";
 import { Plus } from "lucide-react";
-import useOrderStore from "../store/orderStore";
-import useSupplierStore from "../store/supplierStore";
-import useProductStore from "../store/productStore";
+import useOrderStore from "../store/orderStore.jsx";
+import useSupplierStore from "../store/supplierStore.jsx";
+import useProductStore from "../store/productStore.jsx";
 
-import OrderTable from "../components/orders/OrderTable";
-import OrderSearchBar from "../components/orders/OrderSearchBar";
+import OrderTable from "../components/orders/OrderTable.jsx";
+import OrderSearchBar from "../components/orders/OrderSearchBar.jsx";
 // import OrderPagination from "../components/orders/OrderPagination";
-import OrderFormModal from "../components/orders/OrderFormModal";
-import OrderDetailModal from "../components/orders/OrderDetailModal";
-import CancelOrderModal from "../components/orders/CancelOrderModal";
+import OrderFormModal from "../components/orders/OrderFormModal.jsx";
+import OrderDetailModal from "../components/orders/OrderDetailModal.jsx";
+import CancelOrderModal from "../components/orders/CancelOrderModal.jsx";
 
 const PAGE_SIZE = 10;
 

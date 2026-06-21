@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import {  Plus, Trash2 } from "lucide-react";
-import useSupplierProduct from "../../store/supplierProductStore"; // adjust path as needed
+import useSupplierProduct from "../../store/supplierProductStore.jsx"; // adjust path as needed
 
 const EMPTY_ITEM = { product_id: "", quantity: 1 };
 

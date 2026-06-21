@@ -3,7 +3,7 @@ import {
   formatCurrency,
   formatDate,
   getStatusConfig,
-} from "../../utils/orderUtils";
+} from "../../utils/orderUtils.js";
 
 const OrderDetailModal = ({ order, onClose }) => {
   if (!order) return null;

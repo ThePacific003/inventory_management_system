@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 // import api from '../../api/axios'
 import toast from 'react-hot-toast'
-import useAuth from "../../store/authStore"
+import useAuth from "../../store/authStore.jsx"
 
 export default function VerifyResetOTP() {
   const navigate = useNavigate()

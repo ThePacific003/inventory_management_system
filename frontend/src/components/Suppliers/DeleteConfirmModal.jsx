@@ -1,4 +1,4 @@
-import useSupplierStore from "../../store/supplierStore";
+import useSupplierStore from "../../store/supplierStore.jsx";
 
 export default function DeleteConfirmModal({ supplier, onClose }) {
   const { deleteSupplier, loading } = useSupplierStore();

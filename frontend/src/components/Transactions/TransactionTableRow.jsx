@@ -1,4 +1,4 @@
-import { formatDate } from "../../utils/formatDate";
+import { formatDate } from "../../utils/formatDate.js";
 
 export default function TransactionTableRow({ transaction, onClick }) {
   const {

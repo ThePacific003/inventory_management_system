@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { toNullIfInvalid,toStringOrNull } from "../../utils/sanitize";
+import { toNullIfInvalid,toStringOrNull } from "../../utils/sanitize.js";
 
 const getInitialForm = (product, mode) => {
   if (mode === "edit" && product) {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
-import useSupplierStore from "../../store/supplierStore";
-import useSupplierProduct from "../../store/supplierProductStore"; // NEW
+import useSupplierStore from "../../store/supplierStore.jsx";
+import useSupplierProduct from "../../store/supplierProductStore.jsx"; // NEW
 
 const STATUS_STYLES = {
   received: "bg-green-500/10 text-green-400 border-green-500/20",

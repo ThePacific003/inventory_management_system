@@ -1,4 +1,4 @@
-import SupplierTableRow from "./SupplierTableRow";
+import SupplierTableRow from "./SupplierTableRow.jsx";
 
 const COLUMNS = [
   "Name",

@@ -1,10 +1,10 @@
 import { useEffect, useState, useCallback } from "react";
-import useStockStore from "../store/stockStore";
-import TransactionToolbar from "../components/Transactions/TransactionToolbar";
-import TransactionTable from "../components/Transactions/TransactionTable";
-import TransactionFormModal from "../components/Transactions/TransactionFormModal";
-import TransactionDetailModal from "../components/Transactions/TransactionDetailModal";
-import Pagination from "../components/Transactions/Pagination";
+import useStockStore from "../store/stockStore.jsx";
+import TransactionToolbar from "../components/Transactions/TransactionToolbar.jsx";
+import TransactionTable from "../components/Transactions/TransactionTable.jsx";
+import TransactionFormModal from "../components/Transactions/TransactionFormModal.jsx";
+import TransactionDetailModal from "../components/Transactions/TransactionDetailModal.jsx";
+import Pagination from "../components/Transactions/Pagination.jsx";
 import { Plus } from "lucide-react";
 
 const DEFAULT_FILTERS = {

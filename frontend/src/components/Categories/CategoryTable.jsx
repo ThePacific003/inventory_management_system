@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import CategoryTableRow from "./CategoryTableRow";
+import CategoryTableRow from "./CategoryTableRow.jsx";
 
 const ITEMS_PER_PAGE = 8;
 

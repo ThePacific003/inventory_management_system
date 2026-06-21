@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import useSupplierProduct from "../../store/supplierProductStore";
-import CheapestSupplierBadge from "./CheapestSupplierBadge";
-import SupplierProductModal from "./SupplierProductModal";
+import useSupplierProduct from "../../store/supplierProductStore.jsx";
+import CheapestSupplierBadge from "./CheapestSupplierBadge.jsx";
+import SupplierProductModal from "./SupplierProductModal.jsx";
 
 const SupplierListModal = ({ product, onClose, onDataChange }) => {
   const {

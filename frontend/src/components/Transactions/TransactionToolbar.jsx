@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { X } from "lucide-react";
-import useProductStore from "../../store/productStore";
+import useProductStore from "../../store/productStore.jsx";
 
 const TYPE_OPTIONS = [
   { label: "All Types", value: "" },

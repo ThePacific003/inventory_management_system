@@ -1,5 +1,5 @@
-import CheapestSupplierBadge from "../supplierProducts/CheapestSupplierBadge";
-import SupplierCountBadge from "../supplierProducts/SupplierCountBadge";
+import CheapestSupplierBadge from "../supplierProducts/CheapestSupplierBadge.jsx";
+import SupplierCountBadge from "../supplierProducts/SupplierCountBadge.jsx";
 
 const StockBadge = ({ quantity, threshold }) => {
   const isLow = quantity <= threshold;

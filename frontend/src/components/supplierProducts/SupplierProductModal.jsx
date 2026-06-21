@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import useSupplierStore from "../../store/supplierStore";
-import useSupplierProduct from "../../store/supplierProductStore";
+import useSupplierStore from "../../store/supplierStore.jsx";
+import useSupplierProduct from "../../store/supplierProductStore.jsx";
 
 const SupplierProductModal = ({ product, onClose, onSuccess }) => {
   const { suppliers, getAllSuppliers, loading: suppliersLoading } = useSupplierStore();

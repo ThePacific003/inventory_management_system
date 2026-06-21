@@ -2,7 +2,7 @@ import {
   Building2,
 } from "lucide-react";
 
-import {  formatDate } from "../../utils/orderUtils";
+import {  formatDate } from "../../utils/orderUtils.js";
 
 // ── Status Badge (dark theme aligned) ───────────────────────────────
 

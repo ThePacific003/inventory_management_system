@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useSupplierStore from "../../store/supplierStore";
+import useSupplierStore from "../../store/supplierStore.jsx";
 
 export default function SupplierModal({ editingSupplier, onClose }) {
   const { createSupplier, updateSupplier, loading } = useSupplierStore();

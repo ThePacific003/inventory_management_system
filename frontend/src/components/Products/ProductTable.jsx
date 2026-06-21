@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import ProductTableRow from "./ProductTableRow";
+import ProductTableRow from "./ProductTableRow.jsx";
 
 const PAGE_SIZE_OPTIONS = [10, 20, 50];
 const SKELETON_ROWS = 5;

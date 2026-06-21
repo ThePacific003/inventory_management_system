@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 // import api from '../../api/axios'
 import toast from 'react-hot-toast'
-import EyeIcon from '../../components/EyeIcon'
-import useAuth from '../../store/authStore'
+import EyeIcon from '../../components/EyeIcon.jsx'
+import useAuth from '../../store/authStore.jsx'
 
 export default function ResetPassword() {
   const navigate = useNavigate()
