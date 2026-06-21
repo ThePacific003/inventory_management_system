@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import useSupplierStore from "../store/supplierStore.jsx";
-import SupplierTable from "../components/suppliers/SupplierTable.jsx";
-import SupplierModal from "../components/suppliers/SupplierModal.jsx";
-import DeleteConfirmModal from "../components/suppliers/DeleteConfirmModal.jsx";
-import SupplierDetailModal from "../components/suppliers/SupplierDetailModal.jsx";
+import SupplierTable from "../components/Suppliers/SupplierTable.jsx";
+import SupplierModal from "../components/Suppliers/SupplierModal.jsx";
+import DeleteConfirmModal from "../components/Suppliers/DeleteConfirmModal.jsx";
+import SupplierDetailModal from "../components/Suppliers/SupplierDetailModal.jsx";
 
 const PAGE_SIZE = 10;
 

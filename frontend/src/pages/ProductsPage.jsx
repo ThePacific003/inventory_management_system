@@ -1,7 +1,7 @@
 import { useEffect, useState ,useMemo} from "react";
-import ProductTable from "../components/products/ProductTable.jsx";
-import ProductModal from "../components/products/ProductModal.jsx";
-import DeleteConfirmModal from "../components/products/DeleteConfirmModal.jsx";
+import ProductTable from "../components/Products/ProductTable.jsx";
+import ProductModal from "../components/Products/ProductModal.jsx";
+import DeleteConfirmModal from "../components/Products/DeleteConfirmModal.jsx";
 import useProductStore from "../store/productStore.jsx";
 import useSupplierProduct from "../store/supplierProductStore.jsx"
 import SupplierListModal from "../components/supplierProducts/SupplierListModal.jsx"

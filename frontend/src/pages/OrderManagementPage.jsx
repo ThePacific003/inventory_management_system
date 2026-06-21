@@ -4,12 +4,12 @@ import useOrderStore from "../store/orderStore.jsx";
 import useSupplierStore from "../store/supplierStore.jsx";
 import useProductStore from "../store/productStore.jsx";
 
-import OrderTable from "../components/orders/OrderTable.jsx";
-import OrderSearchBar from "../components/orders/OrderSearchBar.jsx";
+import OrderTable from "../components/Orders/OrderTable.jsx";
+import OrderSearchBar from "../components/Orders/OrderSearchBar.jsx";
 // import OrderPagination from "../components/orders/OrderPagination";
-import OrderFormModal from "../components/orders/OrderFormModal.jsx";
-import OrderDetailModal from "../components/orders/OrderDetailModal.jsx";
-import CancelOrderModal from "../components/orders/CancelOrderModal.jsx";
+import OrderFormModal from "../components/Orders/OrderFormModal.jsx";
+import OrderDetailModal from "../components/Orders/OrderDetailModal.jsx";
+import CancelOrderModal from "../components/Orders/CancelOrderModal.jsx";
 
 const PAGE_SIZE = 10;
 
