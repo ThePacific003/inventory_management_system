@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { X, Loader2 } from "lucide-react";
-import useStockStore from "../../store/stockStore";
-import useProductStore from "../../store/productStore";
+import useStockStore from "../../store/stockStore.jsx";
+import useProductStore from "../../store/productStore.jsx";
 
 const INITIAL_FORM = {
   product_id: "",
