@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import useCategoryStore from "../store/categoryStore.jsx";
-import CategoryTable from "../components/categories/CategoryTable.jsx";
-import CategoryModal from "../components/categories/CategoryModal.jsx";
-import DeleteConfirmModal from "../components/categories/DeleteConfirmModal.jsx";
-import CategoryDetailModal from "../components/categories/CategoryDetailModal.jsx";
+import CategoryTable from "../components/Categories/CategoryTable.jsx";
+import CategoryModal from "../components/Categories/CategoryModal.jsx";
+import DeleteConfirmModal from "../components/Categories/DeleteConfirmModal.jsx";
+import CategoryDetailModal from "../components/Categories/CategoryDetailModal.jsx";
 
 const CategoryPage = () => {
   const {
