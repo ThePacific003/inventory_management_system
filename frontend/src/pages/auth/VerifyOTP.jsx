@@ -14,7 +14,7 @@ export default function VerifyOTP() {
   const [loading, setLoading] = useState(false)
   const [timer, setTimer] = useState(600) // 10 min
   const inputs = useRef([])
-  const {VerifyOTP}=authStore
+  const {verifyOTP}=authStore()
   // countdown timer
   useEffect(() => {
     const interval = setInterval(() => {
@@ -64,7 +64,7 @@ export default function VerifyOTP() {
     try {
       // const res = await api.post('/auth/verify', { otp })
       // setUser(res.data.user)
-      await VerifyOTP({otp})
+      await verifyOTP({otp})
       toast.success('Account created successfully!')
       navigate('/')
     } catch (err) {

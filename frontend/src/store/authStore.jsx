@@ -57,53 +57,71 @@ const useAuthStore = create((set) => ({
     }
   },
 
-  verifyOTP:async(data)=>{
-    try{
-      const res=await api.post('/auth/verify',data)
-      set({user:res.data.user})
-      localStorage.setItem("user",JSON.stringify(res.data))
-      return res.data.user
-    }
-    catch(error){
-     throw new error
-    }
-  },
+  // verifyOTP:async(data)=>{
+  //   try{
+  //     const res=await api.post('/auth/verify',data)
+  //     set({user:res.data.user})
+  //     localStorage.setItem("user",JSON.stringify(res.data))
+  //     return res.data.user
+  //   }
+  //   catch(error){
+  //    throw new error
+  //   }
+  // },
 
-  resetPassword:async(data)=>{
-    try{
-      await api.post("/auth/reset-password",data)
-    }
-    catch(err){
-      throw new err
-    }
-  },
+  verifyOTP: async (data) => {
+  const res = await api.post('/auth/verify', data)
+  set({ user: res.data.user })
+  localStorage.setItem("user", JSON.stringify(res.data))
+  return res.data.user
+},
 
-  forgotPassword:async(data)=>{
-    try{
-      await api.post('/auth/forgot-password',data)
-    }
-    catch(err){
-      throw new err
-    }
-  },
+  // resetPassword:async(data)=>{
+  //   try{
+  //     await api.post("/auth/reset-password",data)
+  //   }
+  //   catch(err){
+  //     throw new err
+  //   }
+  // },
 
-  verifyResetOTP:async(data)=>{
-    try{
-      await api.post("/auth/reset-otp",data)
-    }
-    catch(err){
-      throw new err
-    }
-  },
+
+resetPassword: async (data) => {
+  await api.post("/auth/reset-password", data)
+},
+
+  // forgotPassword:async(data)=>{
+  //   try{
+  //     await api.post('/auth/forgot-password',data)
+  //   }
+  //   catch(err){
+  //     throw new err
+  //   }
+  // },
+
+
+forgotPassword: async (data) => {
+  await api.post('/auth/forgot-password', data)
+},
+
+  // verifyResetOTP:async(data)=>{
+  //   try{
+  //     await api.post("/auth/reset-otp",data)
+  //   }
+  //   catch(err){
+  //     throw new err
+  //   }
+  // },
+
+
+verifyResetOTP: async (data) => {
+  await api.post("/auth/reset-otp", data)
+},
 
   createStaff:async(data)=>{
-    try{
       const res=await api.post('/auth/create-staff',data)
       return res.data.users
-    }
-    catch(err){
-      throw new err
-    }
+    
   }
 
 
