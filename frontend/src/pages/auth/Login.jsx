@@ -132,7 +132,7 @@ export default function Login() {
           </form>
 
           {/* Footer */}
-         <p className="text-center text-white/30 text-sm mt-6">
+     <p className="text-center text-white/30 text-sm mt-6">
   {hasUsers === false ? (
     <>
       First time setup?{' '}
@@ -140,9 +140,9 @@ export default function Login() {
         Create admin account
       </Link>
     </>
-  ) : (
+  ) : hasUsers === true ? (
     'Contact your administrator to get access.'
-  )}
+  ) : null /* still loading, show nothing */}
 </p>
         </div>
       </div>
