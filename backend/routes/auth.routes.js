@@ -1,6 +1,7 @@
 import { login, registerUser,verifyOTP,forgotPassword,resetPw ,logout,getMe, createStaffByAdmin, deleteUser, verifyResetOtp} from "../controllers/auth.controller.js";
 import express from 'express'
 import {adminOnly, protect} from '../middleware/auth.middleware.js'
+import pool from '../database/dbConnect.js'
 const router=express.Router()
 
 //public

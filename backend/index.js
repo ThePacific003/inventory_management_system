@@ -34,6 +34,9 @@ const startServer = async () => {
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
+    pool.on("error", (err) => {
+  console.error("Pool error:", err);
+});
   } catch (error) {
     console.error("Server failed to start:", error.message);
     console.error(error)
