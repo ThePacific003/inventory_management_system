@@ -18,4 +18,15 @@ router.get('/me', protect, getMe);
 router.post("/create-staff",protect,adminOnly,createStaffByAdmin);
 router.delete("/users/:id",protect,adminOnly,deleteUser);
 
+router.get("/has-users",async(req ,res)=>{
+    try{
+        const result = await pool.query(`SELECT COUNT(*) FROM users`)
+    const count = parseInt(result.rows[0].count)
+    return res.status(200).json({ success: true, hasUsers: count > 0 })
+    }
+    catch(error){
+         return res.status(500).json({ success: false, message: 'Internal server error' })
+    }
+})
+
 export default router

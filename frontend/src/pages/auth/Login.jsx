@@ -27,7 +27,7 @@ export default function Login() {
       setLoading(false)
     }
   }
-
+  const hasUsers = useAuth((state) => state.hasUsers)
   return (
     <div className="min-h-screen bg-[#0f0f0f] flex items-center justify-center px-4">
       {/* Background grid pattern */}
@@ -132,12 +132,18 @@ export default function Login() {
           </form>
 
           {/* Footer */}
-          <p className="text-center text-white/30 text-sm mt-6">
-            No account yet?{' '}
-            <Link to="/register" className="text-indigo-400 hover:text-indigo-300 transition-colors font-medium">
-              Register
-            </Link>
-          </p>
+         <p className="text-center text-white/30 text-sm mt-6">
+  {hasUsers === false ? (
+    <>
+      First time setup?{' '}
+      <Link to="/register" className="text-indigo-400 hover:text-indigo-300 transition-colors font-medium">
+        Create admin account
+      </Link>
+    </>
+  ) : (
+    'Contact your administrator to get access.'
+  )}
+</p>
         </div>
       </div>
     </div>

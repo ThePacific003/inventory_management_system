@@ -176,6 +176,7 @@ export const verifyOTP = async (req, res) => {
 //login
 export const login = async (req, res) => {
   try {
+    
     const { email, password } = req.body;
 
     if (!email || !password) {

@@ -6,10 +6,11 @@ import authStore from './store/authStore'
 
 function App() {
   const fetchUser = authStore((state) => state.fetchUser)
-
+   const checkHasUsers = authStore((state) => state.checkHasUsers)
   useEffect(() => {
     fetchUser()
-  }, [fetchUser])
+    checkHasUsers()
+  }, [fetchUser,checkHasUsers])
 
   return <AppRoutes />
 }

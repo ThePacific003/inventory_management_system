@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Login from '../pages/auth/Login.jsx'
 import FullScreenSpinner from '../components/FullScreenSpinner.jsx'
-// import Register  from '../pages/auth/Register.jsx'
+import Register  from '../pages/auth/Register.jsx'
 import VerifyOTP from '../pages/auth/VerifyOTP.jsx'
 import ForgotPassword from '../pages/auth/ForgotPassword.jsx'
 import VerifyResetOTP from '../pages/auth/VerifyResetOTP.jsx'
@@ -18,6 +18,7 @@ import Transactions from '../pages/TransactionPage.jsx'
 const ProtectedRoute = ({ children }) => {
   const user = authStore((state) => state.user)
   const loading = authStore((state) => state.loading)
+
   if (loading) return <FullScreenSpinner />
 
   return user ? children : <Navigate to="/login" replace />
@@ -31,6 +32,17 @@ const GuestRoute = ({ children }) => {
   if (loading) return <FullScreenSpinner />
 
   return user ? <Navigate to="/" replace /> : children
+}
+
+const RegisterRoute = ({ children }) => {
+  const user = authStore((state) => state.user)
+  const loading = authStore((state) => state.loading)
+  const hasUsers = authStore((state) => state.hasUsers)
+
+  if (loading || hasUsers === null) return <FullScreenSpinner />
+  if (user) return <Navigate to="/" replace />
+  if (hasUsers) return <Navigate to="/login" replace />
+  return children
 }
 
 
@@ -48,7 +60,7 @@ export default function AppRoutes() {
           }
         />
 
-          {/* <Route path="/register" element={<GuestRoute><Register /></GuestRoute>} /> */}
+          <Route path="/register" element={<RegisterRoute><Register /></RegisterRoute>} />
           <Route path="/verify-otp" element={<GuestRoute><VerifyOTP /></GuestRoute>} />
           <Route path="/forgot-password" element={<GuestRoute><ForgotPassword /></GuestRoute>} />
           <Route path="/verify-reset-otp" element={<GuestRoute><VerifyResetOTP /></GuestRoute>} />

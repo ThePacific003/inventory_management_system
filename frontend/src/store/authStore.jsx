@@ -5,6 +5,17 @@ import api from '../api/axios'
 const useAuthStore = create((set) => ({
   user: null,
   loading: true,
+  hasUsers:null,
+
+  checkHasUsers:async()=>{
+    try{
+       const res = await api.get('/auth/has-users')
+      set({ hasUsers: res.data.hasUsers })
+    }
+    catch{
+      set({hasUsers:null})
+    }
+  },
 
   fetchUser: async () => {
     try {
@@ -39,6 +50,7 @@ const useAuthStore = create((set) => ({
     }
     catch(error){
       console.log(error)
+      throw error
       // toast.error("Login Failed")
     }finally{
       set({loading:false})
