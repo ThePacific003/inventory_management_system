@@ -19,9 +19,10 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-  // origin: true,
-  origin:process.env.CLIENT_URL,
-  credentials: true
+  origin: "https://frontend-g217.onrender.com",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 }));
 app.use(cookieParser());
 
