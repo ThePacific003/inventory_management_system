@@ -1,4 +1,4 @@
-import { login, registerUser,verifyOTP,forgotPassword,resetPw ,logout,getMe, createStaffByAdmin, deleteUser, verifyResetOtp} from "../controllers/auth.controller.js";
+import { login, registerUser,verifyOTP,forgotPassword,resetPw ,logout,getMe, createStaffByAdmin, deleteUser, verifyResetOtp, getAllUsers} from "../controllers/auth.controller.js";
 import express from 'express'
 import {adminOnly, protect} from '../middleware/auth.middleware.js'
 import pool from '../database/dbConnect.js'
@@ -29,5 +29,7 @@ router.get("/has-users",async(req ,res)=>{
          return res.status(500).json({ success: false, message: 'Internal server error' })
     }
 })
+
+router.get("/users",protect,adminOnly,getAllUsers)
 
 export default router

@@ -14,6 +14,7 @@ import Categories from '../pages/CategoryPage.jsx'
 import Suppliers from '../pages/SupplierPage.jsx'
 import Orders from '../pages/OrderManagementPage.jsx'
 import Transactions from '../pages/TransactionPage.jsx'
+import UsersPage from '../pages/UsersPage.jsx'
 // Protected Route
 const ProtectedRoute = ({ children }) => {
   const user = authStore((state) => state.user)
@@ -42,6 +43,15 @@ const RegisterRoute = ({ children }) => {
   if (loading || hasUsers === null) return <FullScreenSpinner />
   if (user) return <Navigate to="/" replace />
   if (hasUsers) return <Navigate to="/login" replace />
+  return children
+}
+
+const AdminRoute = ({ children }) => {
+  const user = authStore((state) => state.user)
+  const loading = authStore((state) => state.loading)
+  if (loading) return <FullScreenSpinner />
+  if (!user) return <Navigate to="/login" replace />
+  if (user.role !== 'admin') return <Navigate to="/" replace />
   return children
 }
 
@@ -84,6 +94,7 @@ export default function AppRoutes() {
           <Route path="suppliers"    element={<Suppliers />} />
           <Route path="orders"       element={<Orders />} />
           <Route path="transactions" element={<Transactions />} />
+          <Route path="users" element={<AdminRoute><UsersPage /></AdminRoute>} />
           
   </Route>
   <Route path="*" element={<Navigate to="/" replace />} />

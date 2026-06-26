@@ -122,7 +122,14 @@ verifyResetOTP: async (data) => {
       const res=await api.post('/auth/create-staff',data)
       return res.data.users
     
-  }
+  },
+  fetchAllUsers: async () => {
+  const res = await api.get('/auth/users')
+  return res.data.users
+},
+deleteUser: async (id) => {
+  await api.delete(`/auth/users/${id}`)
+}
 
 
 }))

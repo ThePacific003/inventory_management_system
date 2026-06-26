@@ -14,6 +14,19 @@ const NAV_ITEMS = [
       </svg>
     ),
   },
+
+  {
+    label:'Users',
+    to:"/users",
+    adminOnly:true,
+    icon:(
+<svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-2.239" />
+    </svg>
+    ),
+  },
+
+  
   {
     label: 'Products',
     to: '/products',
@@ -23,6 +36,8 @@ const NAV_ITEMS = [
       </svg>
     ),
   },
+
+
   {
     label: 'Categories',
     to: '/categories',
@@ -115,24 +130,24 @@ const user = authStore(useShallow((state) => state.user));
 
         {/* Navigation */}
         <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
-          {NAV_ITEMS.map(({ label, to, icon }) => (
-            <NavLink
-              key={to}
-              to={to}
-              end={to === '/'}
-              onClick={() => setSidebarOpen(false)}
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-all duration-150
-                ${isActive
-                  ? 'bg-indigo-500/15 text-white border border-indigo-500/20'
-                  : 'text-white/40 hover:text-white/70 hover:bg-white/5'
-                }`
-              }
-            >
-              {icon}
-              {label}
-            </NavLink>
-          ))}
+          {NAV_ITEMS.filter(item => !item.adminOnly || user?.role === 'admin').map(({ label, to, icon }) => (
+  <NavLink
+    key={to}
+    to={to}
+    end={to === '/'}  
+    onClick={() => setSidebarOpen(false)}
+    className={({ isActive }) =>
+      `flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-all duration-150
+      ${isActive
+        ? 'bg-indigo-500/15 text-white border border-indigo-500/20'
+        : 'text-white/40 hover:text-white/70 hover:bg-white/5'
+      }`
+    }
+  >
+    {icon}
+    {label}
+  </NavLink>
+))}
         </nav>
 
         {/* User block */}

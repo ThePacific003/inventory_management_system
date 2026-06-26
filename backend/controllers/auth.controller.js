@@ -335,20 +335,21 @@ export const createStaffByAdmin = async (req, res) => {
 export const getAllUsers = async (req, res) => {
   try {
     const users = await pool.query(
-      "SELECT id, name, email, role created_at FROM users ORDER BY created_at DESC",
-    );
+      "SELECT id, name, email, role, created_at FROM users ORDER BY created_at DESC"
+      // ← was missing comma between role and created_at
+    )
     return res.status(200).json({
       success: true,
       users: users.rows,
-    });
+    })
   } catch (error) {
-    console.error(error.message);
+    console.error(error.message)
     return res.status(500).json({
       success: false,
       message: "Internal server error",
-    });
+    })
   }
-};
+}
 
 //delete user protected and admin only
 export const deleteUser = async (req, res) => {
